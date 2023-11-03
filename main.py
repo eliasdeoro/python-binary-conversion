@@ -7,6 +7,8 @@ from helper import *
 from calibration import *
 from webcam import *
 
+#file_name = input("Enter the file name for this jpg image:")
+
 picture = start()
 
 (actual_area, calculated_area, calibrated_value, pixel_area) = calibrate(img=picture)

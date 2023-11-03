@@ -1,4 +1,5 @@
 import cv2
+import glob
 import numpy as np
 from scipy import ndimage
 from skimage.measure import regionprops
@@ -6,6 +7,8 @@ from Quadrants.quadrants import *
 
 WIDTH = 720
 HEIGHT = 480
+
+file_name = input("Enter the file name for this jpg image: ")
 
 
 def areaFormula(nq1, nq2, nq3, nq4, nqd):
@@ -38,14 +41,16 @@ def calculateValveArea(calibrated_value, targetFile='images/tv12.jpg', img=None)
     if img is None:
         img = cv2.imread(targetFile, 2)
 
+  #  file_name = input("Enter the file name for this jpg image: ")
+
     resized = cv2.resize(img, (720, 480), interpolation=cv2.INTER_AREA)
     ret, bw_image = cv2.threshold(img, 125, 1, cv2.THRESH_BINARY_INV)
     imgArray = np.asarray(bw_image)
     imgArrayFilled = np.array(ndimage.binary_fill_holes(imgArray), dtype=np.uint8) * 255
     cv2.imshow("output", imgArrayFilled)
-    
+
     #Save the image
-    cv2.imwrite("saved_output_img.jpg", imgArrayFilled)
+    cv2.imwrite("images/" + file_name + "saved.jpg", imgArrayFilled)
 
     valve_pixel_area = bwarea(imgArrayFilled)
     return calibrated_value * valve_pixel_area
